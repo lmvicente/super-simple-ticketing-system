@@ -60,9 +60,10 @@ else
         forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast //this is a LINQ query that generates a sequence of 5 WeatherForecast objects.
             //It uses the Enumerable.Range method to generate a sequence of integers from 1 to 5, and then uses the Select method to project each integer into a new WeatherForecast object.
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
+            Date = startDate.AddDays(index), // this assigns the Date property of the WeatherForecast object to the startDate plus the index.
+            // This way, each forecast will have a different date, starting from today and going up to 5 days in the future.
+            TemperatureC = Random.Shared.Next(-20, 55), //this assigns the TemperatureC property of the WeatherForecast object to a random integer between -20 and 55.
+            Summary = summaries[Random.Shared.Next(summaries.Length)] //this assigns the Summary property of the WeatherForecast object to a random string from the summaries array.
         }).ToArray(); //this converts the sequence of WeatherForecast objects into an array and assigns it to the forecasts variable.
 
         //so now if you call forecasts, it will return an array of 5 WeatherForecast objects, each with a date, temperature in Celsius, and a summary of the weather.
