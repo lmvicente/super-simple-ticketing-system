@@ -1,162 +1,126 @@
-# Ticketing System — Practice Project
+# Super Simple Ticketing System
 
-This is our starting point. Right now it's just the default Blazor template with the sample pages still in it.
+A practice project. Right now it's just the default Blazor template with the sample pages still in it.
 
-**Your job at this stage is to break it.** Change things, see what happens, undo it if you hate it. Nothing here is precious — there's no database and no real data, so there is genuinely nothing you can ruin. We'll start building the actual ticketing system once everyone's comfortable moving around the project.
+**Your job at this stage is to break it.** Change things, see what happens, undo it if you hate it. There's no database and no real data, so there is genuinely nothing you can ruin. We'll start building the actual ticketing system once everyone's comfortable moving around the project.
 
-If you've never used Git before, that's expected. Section 2 starts from zero.
-
----
-
-# Part 1 — Install the tools
-
-- **.NET 10 SDK** — https://dotnet.microsoft.com/download
-- **Visual Studio 2026** (Community edition is free) or **VS Code** with the C# Dev Kit extension
-- **Git** — https://git-scm.com/downloads
-  - On Windows, click through the installer with all the defaults. Don't worry about the options screens.
-  - On Mac, open Terminal and type `git --version`. If it's not installed it'll offer to install it for you.
-
-Once those are done, open a terminal and check both:
-
-```bash
-dotnet --version
-git --version
-```
-
-`dotnet` should print something starting with `10.` and `git` should print a version number. If either says "command not found," restart your terminal first — installers don't always update an already-open one.
-
-> **"Open a terminal"** means Command Prompt or PowerShell on Windows, or Terminal on Mac. In Visual Studio you can also use **View → Terminal**. Anywhere you see a code block like the one above, you're typing it into that.
+If you've never used Git before, that's expected. Everything below assumes you haven't.
 
 ---
 
-# Part 2 — Git from absolute zero
+# Part 1 — Install Visual Studio
 
-## What Git actually is
+Download **Visual Studio 2026** (Community edition is free) from https://visualstudio.microsoft.com/
 
-Git records snapshots of your project over time. Every time you save a snapshot, it remembers what the files looked like at that moment and who changed what. That means:
+During install you'll be asked which workloads you want. Tick **ASP.NET and web development**. That gets you the .NET SDK, the Blazor tooling, and Git — all of it — so there's nothing else to install separately.
 
-- you can undo anything, including things you did last week
-- you can try something risky without fear, because the working version is still saved
-- several people can work on the same project without overwriting each other
-
-The project lives in two places: on the server (that's the shared copy everyone shares) and on your computer (your personal copy). Git's job is keeping those in sync when you want them synced.
-
-## Words you'll see constantly
-
-| Word | What it means |
-|---|---|
-| **repository** (repo) | The project folder, plus its entire history |
-| **clone** | Download a copy of the repo to your computer |
-| **commit** | Save a snapshot, with a note about what you changed |
-| **branch** | Your own parallel version, so your work doesn't disturb anyone else's |
-| **push** | Send your commits up to the server |
-| **pull** | Get everyone else's commits down to your computer |
-| **main** | The shared branch. The "official" version of the project |
-
-## One-time setup
-
-Git stamps your name on every snapshot you save, so it needs to know who you are. Run these once, ever — not per project:
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your@email.com"
-```
-
-Use the same email as your account on the site where our repo lives.
-
-Check it worked:
-
-```bash
-git config --global --list
-```
-
-## Getting the project onto your computer
-
-First, `cd` into wherever you want the project to live. `cd` means "change directory" — it's how you move around in a terminal.
-
-```bash
-cd Documents
-```
-
-Then clone:
-
-```bash
-git clone <REPO_URL>
-```
-
-This creates a new folder containing the project. Move into it:
-
-```bash
-cd <PROJECT_FOLDER>
-```
-
-**The first time you do anything that touches the server, it'll ask you to log in.** A browser window will pop open — sign in there and it'll remember you afterward. If it asks for a password in the terminal instead of opening a browser, stop and message me, because the answer isn't your account password and it's a whole thing.
-
-## The command you'll use most
-
-```bash
-git status
-```
-
-This tells you where you are, what you've changed, and what Git thinks you should do next. It's safe, it changes nothing, and it's the answer to "wait, what's going on." Run it constantly. Seriously.
+If you already have Visual Studio but skipped that workload, open **Visual Studio Installer** from the Start menu, hit Modify, and add it.
 
 ---
 
-# Part 3 — Run the project
+# Part 2 — Clone the repo
 
-```bash
-dotnet run
+"Cloning" means downloading your own copy of the project, along with its full history of every change ever made to it.
+
+### 1. Open Visual Studio
+
+You'll land on the start window. Click **Clone a repository** on the right.
+
+![Visual Studio start window](docs/vs-start-window.png)
+
+### 2. Fill in the repo URL and where to put it
+
+**Repository location:**
+
+```
+https://github.com/lmvicente/super-simple-ticketing-system.git
 ```
 
-Or open the `.sln` file in Visual Studio and press F5.
+**Path:** wherever you want it on your machine. Point it at a **new, empty folder** — don't drop it into a folder that already has stuff in it.
 
-Your browser opens and you should see a home page with a nav menu containing **Counter** and **Weather**. That's the whole app right now.
+![Clone a repository dialog](docs/clone-dialog.png)
 
-To stop it: `Ctrl+C` in the terminal, or the stop button in Visual Studio.
+Click **Clone** at the bottom right.
+
+### 3. Sign in to GitHub when it asks
+
+A browser window will pop open the first time. Sign in there and Visual Studio remembers you afterward.
+
+### 4. Make sure you're looking at the solution
+
+This trips everyone up. After cloning, Visual Studio sometimes shows you the raw **Folder View** instead of the solution, and the project looks wrong — no proper structure, nothing to run.
+
+Look at the top of Solution Explorer. If you see "Folder View," click **super-simple-ticketing-system.slnx** to switch:
+
+![Switching from folder view to the solution](docs/switch-to-solution.png)
+
+Once you're in the solution it should look like this — Components, wwwroot, Program.cs, and the rest:
+
+![Solution Explorer showing the project](docs/solution-explorer.png)
+
+That's what you want.
 
 ---
 
-# Part 4 — Make your own branch (do this before you touch anything)
+# Part 3 — Run it
 
-**This one is not optional and it is not busywork.** If everyone edits `main` directly, we all overwrite each other's work and someone loses an evening. Your branch is your own sandbox.
+Click the green play button at the top. Make sure it says **https** next to it.
 
-## Why a branch
+The **filled** triangle runs with the debugger attached. The **hollow** one runs without. The debugger gives you a console window and lets you pause the code and inspect what's happening — useful, and worth getting used to. Either works.
 
-`main` is the shared official version. A branch is your personal copy of it that you can wreck freely. Your commits go onto your branch and nobody else sees them until we decide to merge. If you completely destroy your branch, we delete it and make a new one from `main` — no harm done.
+![The run button in the toolbar](docs/run-button.png)
 
-## Make it
+### The certificate prompts
 
-Right after you clone, before you edit a single file:
+This project uses HTTPS. If you've never run a .NET web project on this machine, you'll get two prompts the first time only.
 
-```bash
-git checkout -b yourname/homework
+First this one. Click **Yes**:
+
+![Trust ASP.NET Core SSL Certificate prompt](docs/ssl-trust-prompt.png)
+
+Then this one. Also **Yes**:
+
+![Windows security warning about the certificate](docs/ssl-security-warning.png)
+
+Both are just trusting a certificate Visual Studio generated for your own machine so your browser stops complaining about `localhost`. Nothing is leaving your computer.
+
+### You should see this
+
+![The running app in a browser](docs/app-running.png)
+
+A home page, and a nav menu with Counter, Homework, and Weather. That's the whole app right now. The console window in the screenshot is the debugger — you won't see it if you ran with the hollow button, which is fine.
+
+To stop it: the red square in the toolbar, or just close the browser tab and hit stop.
+
+---
+
+# Part 4 — Make your own branch
+
+**Do this before you edit anything.**
+
+### Why
+
+`main` is the shared official version of the project. If we all edit `main` directly, we overwrite each other's work and someone loses an evening.
+
+A **branch** is your own personal copy of the project that you can wreck freely. Your changes live on your branch and don't touch anyone else's. If you completely destroy it, we delete it and make a fresh one — no harm done.
+
+### Making one
+
+Look at the **bottom right corner of Visual Studio**. There's a branch indicator there — it currently says `main`. Click it, then **New Branch**.
+
+Name it with your name in front:
+
+```
+bob/homework
 ```
 
-`checkout -b` means "create a new branch and switch onto it." Use your actual name — `bob/homework`, `jen/homework` — so we can tell whose is whose.
+Leave "Based on" set to `main` and make sure **Checkout branch** is ticked. Create it.
 
-## Confirm you're actually on it
+The bottom right corner should now show your branch name instead of `main`.
 
-```bash
-git branch
-```
+### Check this every time you sit down
 
-You'll get a list of branches with a `*` next to the one you're on. The `*` needs to be next to yours, not `main`:
-
-```
-  main
-* bob/homework
-```
-
-**Check this every single time you sit down to work.** It takes two seconds and it's the difference between a clean push and an annoying cleanup. `git status` tells you the same thing on its first line.
-
-## Switching around later
-
-```bash
-git checkout main          # go back to the shared version
-git checkout bob/homework  # return to yours
-```
-
-Your files on disk physically change when you do this — that's normal, it's Git swapping in whichever version belongs to that branch. Commit before switching, or Git will complain.
+Glance at that bottom right corner before you start working. If it says `main`, you're on the wrong branch — click it and switch to yours. Two seconds, saves a cleanup.
 
 ---
 
@@ -170,191 +134,80 @@ Components/
   Pages/
     Home.razor           The landing page
     Counter.razor        A button that increments a number
+    Homework.razor       Your assignment
     Weather.razor        A table of fake data
   App.razor              The root HTML document
 wwwroot/                 CSS, images, Bootstrap
 Program.cs               Startup and configuration
 ```
 
-**Start by reading `Weather.razor`.** I've commented it line by line — what the `@code` block is, what the model class does, how the loop builds the table rows. It covers most of what you'll need. `Counter.razor` is the simplest possible example of a click handler if you want something smaller first.
+**Read `Weather.razor` first.** It's commented line by line — what the `@code` block is, what the model class does, how the loop builds table rows. It covers most of what you need. `Counter.razor` is the smallest possible example of a button that does something.
+
+**Then read `Homework.razor`** for the actual assignment, and the long comment at the top of it explaining render modes. That comment answers the "why is my button doing nothing" question before you hit it.
 
 ---
 
-# Part 6 — Things to try
+# Part 6 — Saving your work with Git
 
-Work through these in whatever order looks interesting.
+Three things happen, in order, and they are **not** the same thing:
 
-## Get a feel for Razor
+| | What it does | Where your work ends up |
+|---|---|---|
+| **Stage** | Pick which changed files to include | Nowhere yet |
+| **Commit** | Save a snapshot with a message | Your computer only |
+| **Push** | Send it up to GitHub | On the server, where I can see it |
 
-- Change the number Counter adds per click. Then make it subtract.
-- Add a reset button to Counter.
-- Add a column to the Weather table — day of the week, or a "is it freezing" yes/no.
-- Generate 10 forecasts instead of 5.
-- Make the temperature show in red when it's below zero. (Hint: C# works inside attributes — `class="@(temp < 0 ? "text-danger" : "")"`)
+The one people get wrong: **committing does not share anything.** You can commit twenty times and if you never push, nobody sees a thing. Push is the step that matters for turning it in.
 
-## Play with Bootstrap
+### Doing it in Visual Studio
 
-Bootstrap 5 already ships with this template — it's in `wwwroot/lib/bootstrap/` and already linked. Every Bootstrap class works right now with zero setup.
+Open **View → Git Changes**. This panel is where you'll live.
 
-Docs: https://getbootstrap.com/docs/5.3/
+1. **Check the branch name at the top.** Yours, not `main`.
+2. Your changed files are listed under Changes. Hit the **+** next to a file to stage it, or the **+** on the Changes header to stage everything.
+3. Type a message in the box. Describe what you did — "Styled home page and added a card," not "stuff."
+4. Click **Commit Staged**.
+5. Click **Push** (the up arrow at the top of the panel, or Git menu → Push).
 
-- Turn the Weather table into a grid of cards instead.
-- Add a colored badge for each summary — hot ones red, cold ones blue.
-- Restyle `NavMenu.razor` so it stops looking like the default template.
-- Add a button that opens a modal.
-- Resize your browser narrow and fix whatever looks bad.
+The very first push on a new branch, Visual Studio may ask you to confirm creating the branch on GitHub. Say yes.
 
-## Make your own page
+### Commit often
 
-Copy `Counter.razor`, rename it, change the `@page "/whatever"` route at the top, and add a link to it in `NavMenu.razor`. This is the single most useful thing to be able to do from memory — you'll do it constantly.
+Every time something works, commit. They're cheap, and small commits are much easier to undo than one giant one.
 
----
+### What I want when you turn it in
 
-# Part 7 — Committing and pushing to your branch
-
-The rhythm is always the same four steps: **check → stage → commit → push.** You'll repeat this until it's muscle memory.
-
-### 0. Check you're on your branch first
-
-```bash
-git branch
-```
-
-`*` next to your name, not `main`. Every time. Yes, again.
-
-### 1. See what you changed
-
-```bash
-git status
-```
-
-Changed files show up in red under "Changes not staged for commit."
-
-### 2. Stage them
-
-```bash
-git add .
-```
-
-The `.` means "everything I changed." Staging is you telling Git *which* changes belong in this snapshot — with `.` you're saying all of them. Run `git status` again and the files turn green.
-
-### 3. Commit
-
-```bash
-git commit -m "Made the weather table into cards"
-```
-
-That saves the snapshot **to your branch, on your computer only.** Nothing has left your machine yet — this is the part people misunderstand. Committing is not sharing.
-
-The `-m` message is a note to future-you. "Fixed stuff" is useless in three weeks. "Added reset button to counter" isn't.
-
-Commit often. Every time something works is a good rule. They're cheap, and small ones are far easier to undo than one giant one.
-
-### 4. Push
-
-```bash
-git push
-```
-
-*Now* it's on the server and I can see it.
-
-**The first push on a brand new branch will fail** with a message about no upstream branch. That's expected — Git doesn't assume where a new branch should go. It prints the exact command to fix it, which will look like:
-
-```bash
-git push --set-upstream origin yourname/homework
-```
-
-Copy-paste what Git prints. After that once, plain `git push` works forever on that branch.
-
-### Full worked example
-
-Start to finish, what a session looks like:
-
-```bash
-git branch                                    # confirm: * bob/homework
-# ...edit Home.razor, add some Bootstrap...
-git status                                    # Home.razor in red
-git add .
-git commit -m "Styled home page heading and added a card"
-git push
-
-# ...keep working, add a badge...
-git add .
-git commit -m "Added status badge to home page"
-git push
-```
-
-Two commits, both on your branch, both on the server.
-
-### What I'm expecting when you turn it in
-
-- Your own branch, named with your name
-- **At least three commits** with messages that describe what you did
-- All of it pushed — `git push` run after your last commit
-- Push it even if it's unfinished or broken. Especially then.
-
-### Prefer clicking to typing?
-
-Visual Studio does all of this — **View → Git Changes**. It shows your current branch at the top, has a box for the commit message, and buttons for Commit All and Push. Same operations, no terminal. Use whichever sticks; nobody's grading you on command-line usage.
+- Your own branch, with your name in it
+- **At least three commits** with messages that describe what you actually did
+- **Pushed.** Committed but not pushed means I can't see it.
+- Push it even if it's half-finished or broken. Especially then.
 
 ### Did it actually work?
 
-Open the repo in your browser and look for the branch dropdown. Your branch should be listed, and clicking it should show your commits. If it's not there, your push didn't go through — check for an error in the terminal and message me.
+Go to https://github.com/lmvicente/super-simple-ticketing-system in a browser and click the branch dropdown. Your branch should be in the list, and clicking it should show your commits. If it's not there, the push didn't go through — check Git Changes for an error and message me.
 
 ---
 
-# Part 8 — When you mess up
+# Part 7 — When something goes wrong
 
-You will. It's fine, and it's genuinely hard to permanently lose work.
+You will break something. It's fine, and it's genuinely hard to permanently lose work.
 
-**"What's going on right now?"**
-```bash
-git status
-```
+**"Which branch am I on?"**
+Bottom right corner of the window. Always.
 
-**"I broke a file and want it back the way it was."**
-```bash
-git restore FileName.razor
-```
+**"I broke a file and want it back."**
+In **Git Changes**, right-click the file → **Undo Changes**. It goes back to how it was at your last commit.
 
-**"I broke everything, throw away all my changes since the last commit."**
-```bash
-git restore .
-```
-This deletes uncommitted work on purpose. That's the point of it, but there's no undo.
-
-**"What branch am I on again?"**
-```bash
-git branch
-```
-The one with the `*` is you.
+**"What did I actually change?"**
+Double-click a file in Git Changes. You get a side-by-side view — old on the left, yours on the right.
 
 **"I want the latest from main."**
-```bash
-git checkout main
-git pull
-```
+Switch to `main` (bottom right corner), then Git menu → **Pull**. Then switch back to your branch.
 
 **"I committed to `main` by accident."**
+Message me. It's a two-minute fix and completely recoverable, but the steps depend on what you've done since.
 
-Very common, completely fixable, and nothing is lost. You're on `main` with commits that should have been on your own branch. Make the branch now — it takes your commits with it:
-
-```bash
-git checkout -b yourname/homework
-git push --set-upstream origin yourname/homework
-```
-
-Your commits are now on your branch. Then put `main` back how it was:
-
-```bash
-git checkout main
-git reset --hard origin/main
-git checkout yourname/homework
-```
-
-That last block wipes local `main` back to match the server. Only run it once your commits are safely on your branch and pushed — check the browser first if you want to be certain.
-
-**Anything scarier than that** — merge conflicts, a wall of red text, something about HEAD being detached — just stop and message me. Don't start googling and pasting commands you don't recognize. That's how a small problem becomes a big one.
+**Anything scarier** — merge conflicts, a wall of red text, something about "detached HEAD" — stop and message me. Don't start googling and pasting commands you don't recognize. That's how a small problem turns into a big one.
 
 ---
 
@@ -362,4 +215,4 @@ That last block wipes local `main` back to match the server. Only run it once yo
 
 Ask. Paste the actual error text — "it doesn't work" takes ten messages to sort out, the error message usually takes one. Screenshots are fine.
 
-Push whatever you've got, even half-finished or broken. It's much easier to help when I can see the code.
+Push whatever you've got, even half-finished or broken. It's far easier to help when I can see the code.
