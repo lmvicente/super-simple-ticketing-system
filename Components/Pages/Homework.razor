@@ -1,0 +1,294 @@
+﻿@page "/homework"
+@rendermode InteractiveServer
+
+@* @rendermode InteractiveServer is what allows the checkboxes below to actually respond to clicks.
+   Without it, this page still renders and looks completely normal — but nothing would react.
+   Remember this line. It is the #1 reason a Blazor button appears to do nothing. *@
+
+   @{
+    #region Read This For More Info On RenderMode or skip all the way down until you see <PageTitle>Homework</PageTitle>
+    @*  ============================================================================
+    WHAT @rendermode INTERACTIVESERVER ACTUALLY DOES
+    ============================================================================
+
+    Short version: it is the line that makes buttons work. Delete it and this page
+    still loads, still looks completely correct, and every click does nothing at all.
+    No error, no warning, no red text in the console. Just silence.
+
+    That silent failure is the single most common thing to trip people up in Blazor,
+    so it is worth understanding rather than just copying the line around.
+
+    ----------------------------------------------------------------------------
+    WITHOUT IT (this is the default)
+    ----------------------------------------------------------------------------
+
+    A page with no render mode uses "static server-side rendering". Here is the
+    entire lifecycle:
+
+        1. You request the page.
+        2. The server runs your C#, builds the HTML, and sends it.
+        3. The server forgets your component ever existed.
+        4. You are now looking at a plain HTML document.
+
+    Step 3 is the important one. Your @code block is not paused or waiting. It is
+    gone. The currentCount variable, the bools below, all of it was thrown away
+    the instant the HTML went out the door.
+
+    So when you click a button, what is supposed to happen? There is no C# left
+    running anywhere to handle it. The browser has flat HTML and nothing else.
+    Blazor does not even bother attaching the click handler.
+
+    This is also why nothing errors out. From the framework's point of view
+    nothing went wrong. The page rendered exactly as asked. It just happens to
+    be a photograph of a page rather than a working one.
+
+    ----------------------------------------------------------------------------
+    WITH IT
+    ----------------------------------------------------------------------------
+
+    Adding @rendermode InteractiveServer changes step 3. Instead of discarding
+    the component, the server keeps it alive in memory, and the browser opens a
+    persistent connection back to the server (a WebSocket, managed by a library
+    called SignalR). That live connection is called a "circuit".
+
+    Now a click looks like this:
+
+        1. You click a checkbox.
+        2. The browser sends a tiny message up the connection: "checkbox 2, clicked".
+        3. The server finds your still-alive component and runs the C#.
+        4. The server works out precisely which bits of the page changed.
+        5. It sends just those changes back down.
+        6. JavaScript patches those spots in the DOM.
+
+    Note what is NOT happening: the page never reloads and no full HTML is
+    re-sent. Only the difference travels. That is why it feels instant.
+
+    Note also where your C# is running: on the server, not in the browser. The
+    browser is essentially a remote control. This is why you can talk to a
+    database directly from a component later on without exposing anything.
+
+    ----------------------------------------------------------------------------
+    WHY THE CHECKBOXES BELOW RESET WHEN YOU RELOAD
+    ----------------------------------------------------------------------------
+
+    Your circuit lives in the server's memory, and reloading the page throws the
+    old one away and starts a fresh one. Fresh circuit, fresh component, fields
+    back to their starting values.
+
+    Blazor keeps state in memory, not on disk and not in the browser. If you want
+    something to survive a refresh you have to deliberately put it somewhere that
+    outlives the circuit, like a database. Nothing persists by accident.
+
+    It is also why you might see an "Attempting to reconnect" banner if your wifi
+    hiccups. The connection dropped, and with it the live component.
+
+    ----------------------------------------------------------------------------
+    OTHER MODES YOU WILL SEE MENTIONED
+    ----------------------------------------------------------------------------
+
+    Ignore these for now, but so the names are not a mystery when you google:
+
+        InteractiveServer        C# runs on the server, browser stays connected.
+                                 (What we are using.)
+
+        InteractiveWebAssembly   Your C# is downloaded and runs inside the browser.
+                                 No live connection needed, but a slower first load
+                                 and it cannot touch your database directly.
+
+        InteractiveAuto          Uses Server for the first visit, then quietly
+                                 switches to WebAssembly once it has downloaded.
+
+    ----------------------------------------------------------------------------
+    WHERE THE LINE CAN GO
+    ----------------------------------------------------------------------------
+
+    Per page, like here, right under the @page line. Or globally for the whole
+    app, by putting @rendermode="InteractiveServer" on the <Routes /> component
+    in App.razor. Our project sets it per page, which is why you will see this
+    line on Counter.razor too.
+
+    ----------------------------------------------------------------------------
+    THE PRACTICAL TAKEAWAY
+    ----------------------------------------------------------------------------
+
+    When a button does nothing and there is no error message, check for this line
+    first, before you start rewriting your event handler. Nine times out of ten
+    that is the whole problem.
+
+    Static rendering is not a broken mode, by the way. It is faster and lighter,
+    and it is the right choice for pages that only display things. It only becomes
+    a problem when you forget you are in it.
+    ============================================================================ *@
+       #endregion
+   }
+
+<PageTitle>Homework</PageTitle>
+
+<div class="container py-4">
+
+    <div class="mb-5">
+        <h1 class="display-5 fw-bold text-primary">Homework</h1>
+        <p class="lead text-secondary">
+            Two parts. The first is styling only, the second adds a bit of C#.
+            Take your time and break things — nothing here matters.
+        </p>
+    </div>
+
+    <!-- ============ PART 1 ============ -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Part 1  Style the Home page</h4>
+        </div>
+        <div class="card-body">
+            <p>
+                Open <code>Components/Pages/Home.razor</code> and make it look like something other than
+                the default template. No C# for this part. It is pure HTML and Bootstrap classes.
+            </p>
+
+            <p class="fw-semibold mt-4">It has to include all of these:</p>
+            <ul>
+                <li>A heading that is <span class="text-danger">not</span> the default black</li>
+                <li>At least three different text utility classes (size, weight, italics, alignment, color  your pick)</li>
+                <li>One <code>card</code></li>
+                <li>One <code>button</code> It does not have to do anything yet</li>
+                <li>One <code>badge</code></li>
+            </ul>
+
+            <div class="alert alert-info mt-4 mb-0">
+                <strong>Look the classes up rather than asking me.</strong>
+                Getting comfortable in the Bootstrap docs is genuinely half of this assignment 
+                you will be back there constantly for the rest of the project.
+                <a href="https://getbootstrap.com/docs/5.3/" target="_blank" class="alert-link">getbootstrap.com/docs/5.3</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ PART 2 ============ -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Part 2  A greeting page</h4>
+        </div>
+        <div class="card-body">
+            <p>
+                Make a <strong>new page</strong> with a textbox and a button. The user types their name,
+                clicks the button, and a greeting appears on the page saying <em>Hello {their name}!</em>
+            </p>
+
+            <p class="fw-semibold mt-4">Starting it:</p>
+            <ol>
+                <li>Copy <code>Counter.razor</code> and rename the copy</li>
+                <li>Change the <code>@@page</code> route at the top to something new</li>
+                <li>Add a link to it in <code>NavMenu.razor</code></li>
+                <li>Delete the counter bits and build your own thing</li>
+            </ol>
+
+            <p class="fw-semibold mt-4">Rules:</p>
+            <ul>
+                <li>The greeting shows up <strong>on the page</strong>, not in a popup</li>
+                <li>Nothing should be visible before the button is clicked</li>
+                <li>Keep the <code>@@rendermode InteractiveServer</code> line at the top you need it</li>
+            </ul>
+
+            <div class="alert alert-warning mt-4 mb-0">
+                <strong>You will get stuck.</strong> That is the assignment working as intended.
+                Sit with it a bit before messaging me  but do message me rather than
+                burning an entire evening on one line.
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ STRETCH ============ -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0">Stretch goals</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-secondary">Optional, roughly easiest to hardest. Do none, do all.</p>
+            <ul class="mb-0">
+                <li>Disable the button while the textbox is empty</li>
+                <li>Add a Clear button that resets everything</li>
+                <li>Keep a running list of every name entered and show it underneath</li>
+                <li>Pick a random greeting from a list, so it changes each click</li>
+                <li>Make it an actual browser popup <span class="badge bg-danger">hard</span>  this one needs JavaScript interop, come find me</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ============ SUBMITTING ============ -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="mb-0">Turning it in</h4>
+        </div>
+        <div class="card-body">
+            <p>Push it to your own branch. That part is not optional  the Git practice matters as much as the code.</p>
+            <ul>
+                <li>Work on a branch named <code>yourname/homework</code></li>
+                <li>At least <strong>three commits</strong>, with messages that say what you actually did</li>
+                <li>Pushed, even if it is unfinished or broken</li>
+            </ul>
+            <p class="mb-0 text-secondary fst-italic">
+                "Fixed stuff" is not a commit message. "Added clear button to greeting page" is.
+            </p>
+        </div>
+    </div>
+
+    <!-- ============ PROGRESS ============ -->
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="mb-0">Progress</h5>
+        </div>
+        <div class="card-body">
+
+            @* Each checkbox uses @bind to tie itself to a bool field down in the @code block.
+               @bind is two-way: ticking the box updates the variable, and changing the variable
+               updates the box. You will want this exact concept for your textbox in Part 2 —
+               it works the same way on an <input type="text">, just bound to a string instead. *@
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="c1" @bind="part1Done" />
+                <label class="form-check-label" for="c1">Part 1  Home page styled</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="c2" @bind="part2Done" />
+                <label class="form-check-label" for="c2">Part 2  Greeting page works</label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="c3" @bind="pushedDone" />
+                <label class="form-check-label" for="c3">Pushed to my branch</label>
+            </div>
+
+            @* This block only renders when all three bools are true.
+               An @if in Razor is just a normal C# if — it decides whether the HTML inside it
+               gets sent to the browser at all. Same trick you need for hiding your greeting
+               until the button is clicked. *@
+
+            @if (part1Done && part2Done && pushedDone)
+            {
+                <div class="alert alert-success mt-3 mb-0">
+                    Done. Nice work  go break something else.
+                </div>
+            }
+
+            <p class="text-muted small mt-3 mb-0">
+                These reset when you reload. Ask yourself why, and you will understand
+                most of what you need to know about how Blazor holds state.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+@code {
+    // Three bools backing the checkboxes above. A bool is either true or false, nothing else.
+    // They start as false, which is why every box is unticked when the page first loads.
+    private bool part1Done = false;
+    private bool part2Done = false;
+    private bool pushedDone = false;
+
+    // Notice there is no method down here at all — no button click to handle.
+    // @bind wires the checkboxes straight to these fields on its own, and Blazor
+    // re-renders the page whenever one of them changes. That re-render is what makes
+    // the success message appear the moment the third box gets ticked.
+}
