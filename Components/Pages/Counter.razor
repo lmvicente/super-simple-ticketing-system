@@ -10,10 +10,15 @@
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
 @code {
+    // This is a private field that stores the current count value. It is initialized to 0. So when the page is first loaded, the current count will be 0.
+    // When the user clicks the button, the IncrementCount method will be called, which will increment the current count by 1. The updated value will be displayed on the page.
+    // it is always reset to 0 when the page is refreshed or navigated away from. This is because the component is re-rendered and the field is re-initialized to its default value.
     private int currentCount = 0;
 
     private void IncrementCount()
     {
+        // This is a private method that increments the current count by 1. It is called when the user clicks the button. The @onclick directive binds the button click event to this method.
+        // the ++ operator is a shorthand for adding 1 to the current value of currentCount. It is equivalent to writing currentCount = currentCount + 1.
         currentCount++;
     }
 }

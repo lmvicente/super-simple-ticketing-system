@@ -7,6 +7,7 @@
 
 <p>This component demonstrates showing data.</p>
 
+
 @if (forecasts == null)
 {
     <p><em>Loading...</em></p>
@@ -23,6 +24,8 @@ else
             </tr>
         </thead>
         <tbody>
+            @* this is a foreach loop that iterates over the forecasts array and generates a table row for each WeatherForecast object. *@
+            
             @foreach (var forecast in forecasts)
             {
                 <tr>
@@ -37,28 +40,46 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[]? forecasts; //this is a nullable array. the [] state that it is an array, the ? state that it can be null. WeatherForecast is the type of the array.
+    //That type is defined by the model class WeatherForecast defined below.
 
     protected override async Task OnInitializedAsync()
     {
         // Simulate asynchronous loading to demonstrate streaming rendering
         await Task.Delay(500);
 
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        
+        var startDate = DateOnly.FromDateTime(DateTime.Now); //this is the variable startDate that is assigned the value of the current date.
+        //DateOnly is a struct that represents a date without a time component. It is used to represent the date of the weather forecast.
+        //struct (short for structure) is a lightweight data structure that represents a value type
+
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" }; //this is an array of strings that represents the possible summaries of the weather forecast.
+        //It is used to randomly assign a summary to each forecast.
+        
+
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast //this is a LINQ query that generates a sequence of 5 WeatherForecast objects.
+            //It uses the Enumerable.Range method to generate a sequence of integers from 1 to 5, and then uses the Select method to project each integer into a new WeatherForecast object.
         {
             Date = startDate.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        }).ToArray(); //this converts the sequence of WeatherForecast objects into an array and assigns it to the forecasts variable.
+
+        //so now if you call forecasts, it will return an array of 5 WeatherForecast objects, each with a date, temperature in Celsius, and a summary of the weather.
     }
 
+    //this is the model class that defines the structure of the data that will be displayed in the table. It has properties for the date, temperature in Celsius, temperature in Fahrenheit, and a summary of the weather.
     private class WeatherForecast
     {
+        // in this class, we can define the different properties of a weather forecast. Each property has a type and a name.
+        // The type defines what kind of data the property can hold, and the name is used to access the property in code.
+        // For the TicketingSystem, this would be something similar to the datatables we made 
         public DateOnly Date { get; set; }
         public int TemperatureC { get; set; }
         public string? Summary { get; set; }
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
+    //we can assign the value of the TemperatureF property based on the value of the TemperatureC property.
+    // The formula for converting Celsius to Fahrenheit is F = 32 + (C / 0.5556).
+    // This way, we don't need to store the Fahrenheit temperature separately, and it will always be calculated based on the Celsius temperature.
 }
