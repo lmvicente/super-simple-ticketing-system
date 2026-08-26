@@ -1,213 +1,204 @@
 # Super Simple Ticketing System
 
-A practice project. Right now it's just the default Blazor template with the sample pages still in it.
-
-**Your job at this stage is to break it.** Change things, see what happens, undo it if you hate it. There's no database and no real data, so there is genuinely nothing you can ruin. We'll start building the actual ticketing system once everyone's comfortable moving around the project.
-
-If you've never used Git before, that's expected. Everything below assumes you haven't.
+Homework 2 adds a real database. You'll pull down the new code, point it at the database with your own credentials, and then write your own version of what's already there.
 
 ---
 
-# Part 1 — Install Visual Studio
+# Part 1 — Push what you've got
 
-Download **Visual Studio 2026** (Community edition is free) from https://visualstudio.microsoft.com/
+**Before anything else, save and push your current work.** If you switch branches with uncommitted changes, Git will either drag them along with you or refuse to move, and both are annoying to untangle.
 
-During install you'll be asked which workloads you want. Tick **ASP.NET and web development**. That gets you the .NET SDK, the Blazor tooling, and Git — all of it — so there's nothing else to install separately.
+1. **View → Git Changes** (if it isn't open already)
+2. Confirm the branch at the top is yours (`bob/homework`), not `main`
+3. Stage everything with the **+** on the Changes header
+4. Type a message and click **Commit Staged**
+5. Click **Push** (the up arrow at the top of the panel)
 
-If you already have Visual Studio but skipped that workload, open **Visual Studio Installer** from the Start menu, hit Modify, and add it.
-
----
-
-# Part 2 — Clone the repo
-
-"Cloning" means downloading your own copy of the project, along with its full history of every change ever made to it.
-
-### 1. Open Visual Studio
-
-You'll land on the start window. Click **Clone a repository** on the right.
-
-![Visual Studio start window](docs/vs-start-window.png)
-
-### 2. Fill in the repo URL and where to put it
-
-**Repository location:**
-
-```
-https://github.com/lmvicente/super-simple-ticketing-system.git
-```
-
-**Path:** wherever you want it on your machine. Point it at a **new, empty folder** — don't drop it into a folder that already has stuff in it.
-
-![Clone a repository dialog](docs/clone-dialog.png)
-
-Click **Clone** at the bottom right.
-
-### 3. Sign in to GitHub when it asks
-
-A browser window will pop open the first time. Sign in there and Visual Studio remembers you afterward.
-
-### 4. Make sure you're looking at the solution
-
-This trips everyone up. After cloning, Visual Studio sometimes shows you the raw **Folder View** instead of the solution, and the project looks wrong — no proper structure, nothing to run.
-
-Look at the top of Solution Explorer. If you see "Folder View," click **super-simple-ticketing-system.slnx** to switch:
-
-![Switching from folder view to the solution](docs/switch-to-solution.png)
-
-Once you're in the solution it should look like this — Components, wwwroot, Program.cs, and the rest:
-
-![Solution Explorer showing the project](docs/solution-explorer.png)
-
-That's what you want.
+Push even if homework 1 is half-finished or broken. Especially then.
 
 ---
 
-# Part 3 — Run it
+# Part 2 — Switch back to `main`
 
-Click the green play button at the top. Make sure it says **https** next to it.
+Bottom right corner of Visual Studio → click your branch name → select **main**.
 
-The **filled** triangle runs with the debugger attached. The **hollow** one runs without. The debugger gives you a console window and lets you pause the code and inspect what's happening — useful, and worth getting used to. Either works.
+Now open `Components/Pages/Home.razor`. It will look exactly like it always did — none of the new code is there.
 
-![The run button in the toolbar](docs/run-button.png)
-
-### The certificate prompts
-
-This project uses HTTPS. If you've never run a .NET web project on this machine, you'll get two prompts the first time only.
-
-First this one. Click **Yes**:
-
-![Trust ASP.NET Core SSL Certificate prompt](docs/ssl-trust-prompt.png)
-
-Then this one. Also **Yes**:
-
-![Windows security warning about the certificate](docs/ssl-security-warning.png)
-
-Both are just trusting a certificate Visual Studio generated for your own machine so your browser stops complaining about `localhost`. Nothing is leaving your computer.
-
-### You should see this
-
-![The running app in a browser](docs/app-running.png)
-
-A home page, and a nav menu with Counter, Homework, and Weather. That's the whole app right now. The console window in the screenshot is the debugger — you won't see it if you ran with the hollow button, which is fine.
-
-To stop it: the red square in the toolbar, or just close the browser tab and hit stop.
+**This is correct.** Your copy of `main` is a snapshot from whenever you cloned it. New commits went up to GitHub since then, and nothing pulls them down automatically. You have to ask for them.
 
 ---
 
-# Part 4 — Make your own branch
+# Part 3 — Pull the new code
 
-**Do this before you edit anything.**
+With `main` checked out: **Git menu → Pull**.
 
-### Why
+You should see files change in the output. Verify it worked by opening `Components/Pages/Home.razor` — it should now have:
 
-`main` is the shared official version of the project. If we all edit `main` directly, we overwrite each other's work and someone loses an evening.
+- `@inject Services.Dapper DapperService` at the top
+- A **Click This For a List of Techs** button
+- An `@code` block with a `ShowTechs()` method
 
-A **branch** is your own personal copy of the project that you can wreck freely. Your changes live on your branch and don't touch anyone else's. If you completely destroy it, we delete it and make a fresh one — no harm done.
+If you see that, you're good. Skip to Part 4.
 
-### Making one
+### If you don't see it
 
-Look at the **bottom right corner of Visual Studio**. There's a branch indicator there — it currently says `main`. Click it, then **New Branch**.
+Work through these in order:
 
-Name it with your name in front:
+**Check the bottom right corner.** If it doesn't say `main`, the pull updated a different branch. Switch to `main` and pull again.
 
-```
-bob/homework
-```
+**Try Git menu → Fetch, then Pull.** Fetch checks GitHub for new commits, Pull downloads and applies them. Occasionally Visual Studio needs the nudge.
 
-Leave "Based on" set to `main` and make sure **Checkout branch** is ticked. Create it.
+**"Cannot pull because you have uncommitted changes."** You edited files while on `main`. Open Git Changes, right-click each changed file → **Undo Changes** (this throws those edits away — that's fine, your real work is safe on your own branch), then pull again.
 
-The bottom right corner should now show your branch name instead of `main`.
+**Solution Explorer looks wrong — no Components folder, no Program.cs.** You're in Folder View. Click `super-simple-ticketing-system.slnx` at the top of Solution Explorer to switch to the solution.
 
-### Check this every time you sit down
-
-Glance at that bottom right corner before you start working. If it says `main`, you're on the wrong branch — click it and switch to yours. Two seconds, saves a cleanup.
+**A wall of red text, "merge conflict," or "detached HEAD."** Stop and message me. Don't google it and start pasting commands — that's how a two-minute fix becomes an hour.
 
 ---
 
-# Part 5 — What's in here
+# Part 4 — Branch off the *updated* `main`
+
+**Order matters here.** You pulled first so that your new branch starts from the latest code. If you'd branched before pulling, you'd be building on the old snapshot.
+
+With `main` checked out and up to date:
+
+1. Bottom right corner → click `main` → **New Branch**
+2. Name it with your name in front:
 
 ```
-Components/
-  Layout/
-    MainLayout.razor     The shell — everything renders inside this
-    NavMenu.razor        The sidebar links
-  Pages/
-    Home.razor           The landing page
-    Counter.razor        A button that increments a number
-    Homework.razor       Your assignment
-    Weather.razor        A table of fake data
-  App.razor              The root HTML document
-wwwroot/                 CSS, images, Bootstrap
-Program.cs               Startup and configuration
+bob/homework2
 ```
 
-**Read `Weather.razor` first.** It's commented line by line — what the `@code` block is, what the model class does, how the loop builds table rows. It covers most of what you need. `Counter.razor` is the smallest possible example of a button that does something.
+3. Leave **Based on** set to `main`
+4. Make sure **Checkout branch** is ticked
+5. Create
 
-**Then read `Homework.razor`** for the actual assignment, and the long comment at the top of it explaining render modes. That comment answers the "why is my button doing nothing" question before you hit it.
+Bottom right should now show `bob/homework2`. Glance at that corner every time you sit down. If it says `main`, you're on the wrong branch.
 
 ---
 
-# Part 6 — Saving your work with Git
+# Part 5 — Add your credentials, and hide them from Git
 
-Three things happen, in order, and they are **not** the same thing:
+### 1. Fill in your credentials
 
-| | What it does | Where your work ends up |
-|---|---|---|
-| **Stage** | Pick which changed files to include | Nowhere yet |
-| **Commit** | Save a snapshot with a message | Your computer only |
-| **Push** | Send it up to GitHub | On the server, where I can see it |
+Open **appsettings.json**. The connection string is in there with the username and password redacted. Replace both with the ones I sent you, and leave everything else alone.
 
-The one people get wrong: **committing does not share anything.** You can commit twenty times and if you never push, nobody sees a thing. Push is the step that matters for turning it in.
+### 2. Tell Git to stop watching that file
 
-### Doing it in Visual Studio
+**Do this now, before you commit anything.**
 
-Open **View → Git Changes**. This panel is where you'll live.
+`appsettings.json` is in the repo — that's how you got the connection string in the first place. Which means Git is tracking it, and the moment you type your password into it, it'll turn up in Git Changes as a modified file. Stage everything with the **+** button and you've just pushed your password to GitHub.
 
-1. **Check the branch name at the top.** Yours, not `main`.
-2. Your changed files are listed under Changes. Hit the **+** next to a file to stage it, or the **+** on the Changes header to stage everything.
-3. Type a message in the box. Describe what you did — "Styled home page and added a card," not "stuff."
-4. Click **Commit Staged**.
-5. Click **Push** (the up arrow at the top of the panel, or Git menu → Push).
+One command stops that:
 
-The very first push on a new branch, Visual Studio may ask you to confirm creating the branch on GitHub. Say yes.
+1. **View → Terminal**
+2. Paste this and hit Enter:
 
-### Commit often
+```
+git update-index --skip-worktree super-simple-ticketing-system/appsettings.json
+```
 
-Every time something works, commit. They're cheap, and small commits are much easier to undo than one giant one.
+It prints nothing when it works. That's normal — no news is good news.
 
-### What I want when you turn it in
+What it does: tells Git *this file stays in the repo, but stop paying attention to my local changes to it.* Your credentials stay on your machine.
 
-- Your own branch, with your name in it
-- **At least three commits** with messages that describe what you actually did
-- **Pushed.** Committed but not pushed means I can't see it.
-- Push it even if it's half-finished or broken. Especially then.
+### 3. Confirm it worked
+
+Open **View → Git Changes**. Even though you just edited `appsettings.json`, it should **not** appear in the Changes list.
+
+**If it's still there, stop and message me before you commit anything.** The command didn't take, and I'd rather sort that out now than pull your password out of the history later.
+
+### "Isn't that what .gitignore is for?"
+
+Normally, yes. A `.gitignore` is a plain text file at the root of the repo listing things Git should pretend don't exist — build output, local settings, credentials. Ours is there; open it and have a look.
+
+But **.gitignore only works on files Git has never tracked.** Once a file is committed, adding it to .gitignore does nothing at all — Git keeps watching it. Since I had to commit `appsettings.json` so you'd have the connection string, ignoring it isn't an option. `skip-worktree` is the tool for that other situation: a file that has to be in the repo, but whose contents are different for every person.
+
+Worth knowing because the "why is Git still tracking this, I ignored it" confusion catches out people who've been using Git for years.
+
+And to be clear about the real-world version: you wouldn't put credentials in a config file at all. They'd live in user secrets, environment variables, or a key vault, with nothing sensitive anywhere near the repo. We'll get to that.
+
+---
+
+# Part 6 — Wake the database up first
+
+**Do this before you run the project.**
+
+Open **SQL Server Management Studio** and connect to the database with your credentials.
+
+**The first attempt will probably fail.** You'll get a timeout, or an error saying the database isn't currently available. This is expected and nothing is broken — the database pauses itself when nobody's used it for a while, and the failed connection attempt is what wakes it back up.
+
+Wait a minute or two and connect again. It usually takes one or two tries.
+
+Once SSMS connects, have a look around: expand **Databases → Tables**. You'll see `Technicians`, `TicketStatus`, and `TicketType`. Right-click a table → **Select Top 1000 Rows** to see what's actually in it. Knowing what the data looks like makes the next part much easier.
+
+Now run the project. If you skip the SSMS step and go straight to running it, the page will just error out while the database is still waking up.
+
+---
+
+# Part 7 — The assignment
+
+`Home.razor` currently has one working example: a button that fetches technicians and lists their first names.
+
+```razor
+@inject Services.Dapper DapperService
+@rendermode InteractiveServer
+@page "/"
+@using super_simple_ticketing_system.Models
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app. Click on the "Homework" link in the navigation menu to get started.
+
+<button @onclick="ShowTechs">Click This For a List of Techs</button>
+
+@foreach (var tech in technicians)
+{
+    <p>@tech.FirstName</p>
+}
+
+@code {
+    List<Technicians> technicians = new List<Technicians>();
+
+    private async Task ShowTechs()
+    {
+        technicians = (await DapperService.GetTechniciansAsync()).ToList();
+    }
+}
+```
+
+**Your job:** underneath the technicians loop, add the same thing twice more — one button that lists **TicketStatus**, and one button that lists **TicketType**. Each gets its own button, its own list, and its own method.
+
+Read the existing example closely and copy the pattern. Everything you need is in those four pieces:
+
+- The `@onclick` that wires a button to a method
+- The list declared in `@code`
+- The method that fills it from `DapperService`
+- The `@foreach` that renders it
+
+Look at `Services/Dapper.cs` to see what methods are available and what they return, and at the `Models` folder to see what properties each type has. If the method you need isn't in `Dapper.cs`, writing it is part of the assignment — `GetTechniciansAsync()` shows you the shape.
+
+If your button appears but clicking it does nothing, check that `@rendermode InteractiveServer` is still at the top of the file.
+
+---
+
+# Part 8 — Turning it in
+
+Commit every time something works. Small commits are much easier to undo than one giant one.
+
+What I want:
+
+- Branch named `yourname/homework2`, branched off the updated `main`
+- **Pushed.** Committing saves to your computer only. Push is the step that puts it on GitHub where I can see it.
+- No `appsettings.json` in any of your commits
+
+The first push on a new branch, Visual Studio may ask you to confirm creating the branch on GitHub. Say yes.
 
 ### Did it actually work?
 
-Go to https://github.com/lmvicente/super-simple-ticketing-system in a browser and click the branch dropdown. Your branch should be in the list, and clicking it should show your commits. If it's not there, the push didn't go through — check Git Changes for an error and message me.
-
----
-
-# Part 7 — When something goes wrong
-
-You will break something. It's fine, and it's genuinely hard to permanently lose work.
-
-**"Which branch am I on?"**
-Bottom right corner of the window. Always.
-
-**"I broke a file and want it back."**
-In **Git Changes**, right-click the file → **Undo Changes**. It goes back to how it was at your last commit.
-
-**"What did I actually change?"**
-Double-click a file in Git Changes. You get a side-by-side view — old on the left, yours on the right.
-
-**"I want the latest from main."**
-Switch to `main` (bottom right corner), then Git menu → **Pull**. Then switch back to your branch.
-
-**"I committed to `main` by accident."**
-Message me. It's a two-minute fix and completely recoverable, but the steps depend on what you've done since.
-
-**Anything scarier** — merge conflicts, a wall of red text, something about "detached HEAD" — stop and message me. Don't start googling and pasting commands you don't recognize. That's how a small problem turns into a big one.
+Go to https://github.com/lmvicente/super-simple-ticketing-system, click the branch dropdown, and look for `yourname/homework2`. Clicking it should show your commits. If it's not there, the push didn't go through — check Git Changes for an error and message me.
 
 ---
 
