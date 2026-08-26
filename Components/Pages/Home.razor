@@ -1,7 +1,31 @@
-﻿@page "/"
+﻿@inject Services.Dapper DapperService
+@rendermode InteractiveServer
+@page "/"
+@using super_simple_ticketing_system.Models
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app. Click on the "Homework" link in the navigation menu to get started.
+
+<button @onclick="ShowTechs">Click This For a List of Techs</button>
+
+@foreach (var tech in technicians)
+{
+    <p>@tech.FirstName</p>
+}
+
+
+List out the TicketStatus and TicketType when I click their respective buttons. Do it under this line.
+
+
+@code{
+
+    List<Technicians> technicians = new List<Technicians>();
+
+    private async Task ShowTechs()
+    {
+        technicians = (await DapperService.GetTechniciansAsync()).ToList();
+    }
+}
