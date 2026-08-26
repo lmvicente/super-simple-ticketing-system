@@ -1,0 +1,23 @@
+﻿@page "/greeting"
+@rendermode InteractiveServer
+
+<PageTitle>Greeting</PageTitle>
+
+<h1>Greeting</h1>
+
+<input class="form-control mb-3" placeholder="Your name" @bind="name" />
+<button type="button" class="btn btn-primary" @onclick="ShowGreeting">Say hello</button>
+
+@if (!string.IsNullOrEmpty(greeting))
+{
+    <p class="mt-3">@greeting</p>
+}
+
+@code {
+    private string name = "";
+    private string greeting = "";
+    private void ShowGreeting()
+    {
+        greeting = $"Hello {name}!";
+    }
+}
